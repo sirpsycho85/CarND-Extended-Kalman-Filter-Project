@@ -46,6 +46,8 @@ private:
   MatrixXd F_;
   MatrixXd P_;
   MatrixXd Q_;
+  float noise_ax;
+  float noise_ay;
 };
 
 #endif /* FusionEKF_H_ */
