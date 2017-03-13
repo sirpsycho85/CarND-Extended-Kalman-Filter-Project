@@ -56,6 +56,7 @@ public:
    */
   void Predict();
 
+  void UpdateCommon(const VectorXd &z, const VectorXd &z_pred);
   /**
    * Updates the state by using standard Kalman Filter equations
    * @param z The measurement at k+1
