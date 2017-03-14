@@ -32,17 +32,17 @@ FusionEKF::FusionEKF() {
 
   // observation noise covariance - laser
   R_laser_ = MatrixXd(2, 2);
-  R_laser_ <<  0.8, 0,
-              0, 0.8; //0.8
+  R_laser_ <<  0.0225, 0,
+              0, 0.0225; //0.8
 
   // observation noise covariance - radar
   R_radar_ = MatrixXd(3, 3);
-  R_radar_ <<  0.8, 0, 0,
-               0, 0.8, 0,
-               0, 0, 0.8; //0.8
+  R_radar_ <<  0.09, 0, 0,
+               0, 0.0009, 0,
+               0, 0, 0.09; //0.8
 
-  noise_ax = 325; //325
-  noise_ay = 325;
+  noise_ax = 9; //325
+  noise_ay = 9;
 }
 
 /**
@@ -92,7 +92,7 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
       px = ro * cos(theta);
       py = ro * sin(theta);
 
-      // TODO: fix the vx and vy initialization
+      // is there a better initialization?
       vx = ro_dot * cos(theta);
       vy = ro_dot * cos(theta);
 
