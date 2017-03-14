@@ -32,17 +32,17 @@ FusionEKF::FusionEKF() {
 
   // observation noise covariance - laser
   R_laser_ = MatrixXd(2, 2);
-  R_laser_ <<  0.0225, 0,
-              0, 0.0225;
+  R_laser_ <<  0.8, 0,
+              0, 0.8; //0.8
 
   // observation noise covariance - radar
   R_radar_ = MatrixXd(3, 3);
-  R_radar_ <<  0.0225, 0, 0,
-               0, 0.0225, 0,
-               0, 0, 0.0225;
+  R_radar_ <<  0.8, 0, 0,
+               0, 0.8, 0,
+               0, 0, 0.8; //0.8
 
-  noise_ax = 200;
-  noise_ay = 200;
+  noise_ax = 325; //325
+  noise_ay = 325;
 }
 
 /**
@@ -54,6 +54,9 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
   /*****************************************************************************
    *  Initialization
    ****************************************************************************/
+  
+  //TODO: skip bad measurements that give nan results
+
   if (!is_initialized_) {
     cout << "Kalman Filter Initialization " << endl;
     cout << "EKF: " << endl;
