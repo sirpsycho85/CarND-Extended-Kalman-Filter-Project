@@ -44,7 +44,7 @@ MatrixXd Tools::CalculateJacobian(const VectorXd& x_state) {
   MatrixXd Hj;
   Hj = MatrixXd(3,4);
 
-//recover state parameters
+	//recover state parameters
 	float px = x_state(0);
 	float py = x_state(1);
 	float vx = x_state(2);
@@ -56,8 +56,9 @@ MatrixXd Tools::CalculateJacobian(const VectorXd& x_state) {
 	float c3 = (c1*c2);
 
 	//check division by zero
+	// improvement - is there something better than setting to zero and ignoring the measurement?
 	if(fabs(c1) < 0.0001){
-		cout << "CalculateJacobian () - Error - Division by Zero" << endl;
+		Hj.setZero();
 		return Hj;
 	}
 

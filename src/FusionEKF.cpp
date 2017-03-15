@@ -33,15 +33,15 @@ FusionEKF::FusionEKF() {
   // observation noise covariance - laser
   R_laser_ = MatrixXd(2, 2);
   R_laser_ <<  0.0225, 0,
-              0, 0.0225; //0.8
+              0, 0.0225;
 
   // observation noise covariance - radar
   R_radar_ = MatrixXd(3, 3);
   R_radar_ <<  0.09, 0, 0,
                0, 0.0009, 0,
-               0, 0, 0.09; //0.8
+               0, 0, 0.09;
 
-  noise_ax = 9; //325
+  noise_ax = 9;
   noise_ay = 9;
 }
 
@@ -54,8 +54,6 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
   /*****************************************************************************
    *  Initialization
    ****************************************************************************/
-  
-  //TODO: skip bad measurements that give nan results
 
   if (!is_initialized_) {
     cout << "Kalman Filter Initialization " << endl;
@@ -137,9 +135,11 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
   if (measurement_pack.sensor_type_ == MeasurementPackage::RADAR) {
     Tools tools;
     Hj_ = tools.CalculateJacobian(ekf_.x_);
-    ekf_.H_ = Hj_;
-    ekf_.R_ = R_radar_;
-    ekf_.UpdateEKF(measurement_pack.raw_measurements_);
+    if (!Hj_.isZero(0)) {
+      ekf_.H_ = Hj_;
+      ekf_.R_ = R_radar_;
+      ekf_.UpdateEKF(measurement_pack.raw_measurements_);
+    }
   } else {
     ekf_.H_ = H_laser_;
     ekf_.R_ = R_laser_;
